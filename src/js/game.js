@@ -1,14 +1,20 @@
 import '../css/style.css'
 
-import { 
-    Actor, 
-    Engine, 
-    Vector, 
-    DisplayMode 
+import {
+    Actor,
+    Engine,
+    Vector,
+    DisplayMode
 } from "excalibur"
 
-import { Resources, ResourceLoader } from './resources.js'
+import {
+    Resources,
+    ResourceLoader
+} from './resources.js'
+
 import { Fish } from "./fish.js";
+import { Shark } from "./shark.js";
+import { Mine } from "./mine.js";
 
 export class Game extends Engine {
 
@@ -27,74 +33,52 @@ export class Game extends Engine {
 
     startGame() {
 
-        console.log("Game started!");
-        for (let i = 0; i < 10; i++) {
+        console.log("Game Started");
 
-    const mine = new Mine(
-        Math.random() * 1280,
-        Math.random() * 720
-    );
-
-    this.add(mine);
-}
-
-        // WATER
+        // WATER BACKGROUND
         const water = new Actor();
-        water.graphics.use(Resources.Water.toSprite());
+
+        water.graphics.use(
+            Resources.Water.toSprite()
+        );
 
         water.pos = new Vector(640, 360);
 
+        // background layer
+        water.z = -1;
+
         this.add(water);
 
+        // PLAYER SHARK
+        const shark = new Shark();
+
+        this.add(shark);
+
         // 100 FISH
-        for (let i = 0; i < 100; i++) {
+        for(let i = 0; i < 100; i++) {
 
             const fish = new Fish(
+
                 Math.random() * 1280,
                 Math.random() * 720
+
             );
 
             this.add(fish);
         }
 
-        // BONES
-        const bones = new Actor();
+        // 10 MINES
+        for(let i = 0; i < 10; i++) {
 
-        bones.graphics.use(Resources.Bones.toSprite());
+            const mine = new Mine(
 
-        bones.pos = new Vector(800, 300);
+                Math.random() * 1280,
+                Math.random() * 720
 
-        bones.vel = new Vector(40, 0);
+            );
 
-        bones.events.on(
-            "exitviewport",
-            (e) => this.bonesLeft(e)
-        );
-
-        this.add(bones);
-
-        // SHARK
-   import { Shark } from "./shark.js";
-
-const shark = new Shark();
-
-this.add(shark);
-    }
-
-    bonesLeft(e) {
-
-        e.target.pos = new Vector(
-            -50,
-            Math.random() * 720
-        );
-    }
-
-    sharkLeft(e) {
-
-        e.target.pos = new Vector(
-            -50,
-            Math.random() * 720
-        );
+            this.add(mine);
+        }
     }
 }
 

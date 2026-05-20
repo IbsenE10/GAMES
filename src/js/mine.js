@@ -1,4 +1,5 @@
 import { Actor, Vector } from "excalibur";
+
 import { Resources } from "./resources.js";
 
 export class Mine extends Actor {
@@ -6,7 +7,9 @@ export class Mine extends Actor {
     constructor(x, y) {
         super();
 
-        this.graphics.use(Resources.Mine.toSprite());
+        this.graphics.use(
+            Resources.Mine.toSprite()
+        );
 
         this.pos = new Vector(x, y);
 
@@ -14,12 +17,15 @@ export class Mine extends Actor {
         this.vel = new Vector(-200, 0);
 
         // viewport event
-        this.events.on("exitviewport", () => this.mineLeft());
+        this.on(
+            "exitviewport",
+            () => this.mineLeft()
+        );
     }
 
     mineLeft() {
 
-        // respawn on right side
+        // respawn on right
         this.pos = new Vector(
             1400,
             Math.random() * 720

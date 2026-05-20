@@ -1,6 +1,7 @@
 import { Actor, Vector, Keys } from "excalibur";
+
 import { Resources } from "./resources.js";
-import { Mine } from "./mine.js";
+
 import { Fish } from "./fish.js";
 import { Mine } from "./mine.js";
 
@@ -15,48 +16,59 @@ export class Shark extends Actor {
 
     onInitialize(engine) {
 
-        this.graphics.use(Resources.Shark.toSprite());
+        this.graphics.use(
+            Resources.Shark.toSprite()
+        );
 
         this.pos = new Vector(300, 300);
 
-        this.on("collisionstart", (event) => {
+        // collision event
+        this.on(
+            "collisionstart",
+            (event) => {
 
-            console.log("Collision!");
+                // hit fish
+                if(event.other.owner instanceof Fish) {
 
-            // remove object you hit
-            event.other.owner.kill();
-        });
-        this.on("collisionstart", (event) => {
+                    this.score += 10;
 
-    if(event.other.owner instanceof Fish) {
+                    console.log(
+                        "Score:",
+                        this.score
+                    );
 
-        this.score += 10;
+                    event.other.owner.kill();
+                }
 
-        console.log("Score:", this.score);
+                // hit mine
+                if(event.other.owner instanceof Mine) {
 
-        event.other.owner.kill();
-    }
+                    this.health -= 20;
 
-    if(event.other.owner instanceof Mine) {
+                    console.log(
+                        "Health:",
+                        this.health
+                    );
 
-        this.health -= 20;
+                    event.other.owner.kill();
 
-        console.log("Health:", this.health);
+                    if(this.health <= 0) {
 
-        event.other.owner.kill();
+                        console.log("GAME OVER");
 
-        if(this.health <= 0) {
-            this.kill();
-        }
-    }
-});
+                        this.kill();
+                    }
+                }
+            }
+        );
     }
 
     onPreUpdate(engine) {
 
-        this.vel = new Vector(0,0);
+        this.vel = new Vector(0, 0);
 
-        // WASD movement
+        // WASD
+
         if(engine.input.keyboard.isHeld(Keys.W)) {
             this.vel.y = -300;
         }
@@ -72,6 +84,23 @@ export class Shark extends Actor {
         if(engine.input.keyboard.isHeld(Keys.D)) {
             this.vel.x = 300;
         }
+
+        // arrow keys
+
+        if(engine.input.keyboard.isHeld(Keys.Up)) {
+            this.vel.y = -300;
+        }
+
+        if(engine.input.keyboard.isHeld(Keys.Down)) {
+            this.vel.y = 300;
+        }
+
+        if(engine.input.keyboard.isHeld(Keys.Left)) {
+            this.vel.x = -300;
+        }
+
+        if(engine.input.keyboard.isHeld(Keys.Right)) {
+            this.vel.x = 300;
+        }
     }
-    
 }
