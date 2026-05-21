@@ -1,4 +1,5 @@
 import { ImageSource, Loader } from 'excalibur'
+import { ScaryFish } from './scaryfish'
 
 // voeg hier jouw eigen resources toe
 const Resources = {
@@ -13,7 +14,9 @@ const Resources = {
 
     Bubble: new ImageSource('images/bubble.png'),
 
-    Mine: new ImageSource('images/mine.png')
+    Mine: new ImageSource('images/mine.png'),
+
+    ScaryFish: new ImageSource('images/fish.png')
 }
 
 const ResourceLoader = new Loader()

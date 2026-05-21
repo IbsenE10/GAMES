@@ -1,4 +1,9 @@
-import { Actor, Vector, Keys } from "excalibur";
+import {
+    Actor,
+    Vector,
+    Keys,
+    CollisionType
+} from "excalibur";
 
 import { Resources } from "./resources.js";
 
@@ -8,6 +13,7 @@ import { Mine } from "./mine.js";
 export class Shark extends Actor {
 
     constructor() {
+
         super();
 
         this.score = 0;
@@ -16,11 +22,23 @@ export class Shark extends Actor {
 
     onInitialize(engine) {
 
+        // sprite
         this.graphics.use(
             Resources.Shark.toSprite()
         );
 
+        // position
         this.pos = new Vector(300, 300);
+
+        // collision
+        this.body.collisionType =
+            CollisionType.Active;
+
+        // collider size
+        this.collider.useBoxCollider(
+            120,
+            80
+        );
 
         // collision event
         this.on(
@@ -52,9 +70,12 @@ export class Shark extends Actor {
 
                     event.other.owner.kill();
 
+                    // game over
                     if(this.health <= 0) {
 
-                        console.log("GAME OVER");
+                        console.log(
+                            "GAME OVER"
+                        );
 
                         this.kill();
                     }
@@ -65,6 +86,7 @@ export class Shark extends Actor {
 
     onPreUpdate(engine) {
 
+        // reset velocity
         this.vel = new Vector(0, 0);
 
         // WASD
@@ -85,7 +107,7 @@ export class Shark extends Actor {
             this.vel.x = 300;
         }
 
-        // arrow keys
+        // Arrow keys
 
         if(engine.input.keyboard.isHeld(Keys.Up)) {
             this.vel.y = -300;
