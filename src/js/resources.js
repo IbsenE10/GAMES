@@ -1,5 +1,4 @@
 import { ImageSource, Loader } from 'excalibur'
-import { ScaryFish } from './scaryfish'
 
 // voeg hier jouw eigen resources toe
 const Resources = {

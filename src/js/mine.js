@@ -9,8 +9,7 @@ import { Resources } from "./resources.js";
 export class Mine extends Actor {
 
     constructor(x, y) {
-
-        super();
+        super({ width: 80, height: 80 });
 
         // sprite
         this.graphics.use(
@@ -23,25 +22,15 @@ export class Mine extends Actor {
         // movement
         this.vel = new Vector(-200, 0);
 
-        // collision
-        this.body.collisionType =
-            CollisionType.Active;
-
-        // collider size
-        this.collider.useBoxCollider(
-            80,
-            80
-        );
+        // Passive: shark's Active collision detects it,
+        // but the mine doesn't push the shark around
+        this.body.collisionType = CollisionType.Passive;
 
         // viewport event
-        this.on(
-            "exitviewport",
-            () => this.mineLeft()
-        );
+        this.on("exitviewport", () => this.mineLeft());
     }
 
     mineLeft() {
-
         // respawn on right side
         this.pos = new Vector(
             1400,

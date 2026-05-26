@@ -9,7 +9,7 @@ import { Resources } from "./resources.js";
 export class Fish extends Actor {
 
     constructor(x, y) {
-        super();
+        super({ width: 80, height: 50 });
 
         this.sprite = Resources.Fish.toSprite();
         this.graphics.use(this.sprite);
@@ -21,22 +21,21 @@ export class Fish extends Actor {
             0
         );
 
-        this.body.collisionType = CollisionType.Active;
-
-        this.collider.useBoxCollider(80, 50);
+        // Passive: still triggers collision events on Active actors
+        // but fish don't push each other or get pushed around
+        this.body.collisionType = CollisionType.Passive;
 
         this.on("exitviewport", () => this.fishLeft());
     }
+fishLeft() {
+    this.pos = new Vector(
+        -50,
+        Math.random() * 600
+    )
 
-    fishLeft() {
-        this.pos = new Vector(
-            -50,
-            Math.random() * 720
-        );
-
-        this.vel = new Vector(
-            Math.random() * 100 + 50,
-            0
-        );
-    }
+    this.vel = new Vector(
+        Math.random() * 100 + 50,
+        0
+    )
+}
 }
